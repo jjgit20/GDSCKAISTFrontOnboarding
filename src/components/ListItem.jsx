@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import Colors from '../style/Colors';
 import MuiButton from './MuiButton';
+import MuiModal from './MuiModal';
 
 const Container = styled.div`
   width: 100%; //or fit-content
@@ -104,7 +105,16 @@ const PatientText2 = styled.div`
 `;
 
 const ListItem = ({ type, name, time, region, patients }) => {
-  // ' | ' 앞부분 띄어쓰기 어케함?
+  const [open, setOpen] = React.useState(false);
+
+  const handleOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
   return (
     <Container>
       <LeftArea>
@@ -121,7 +131,10 @@ const ListItem = ({ type, name, time, region, patients }) => {
           <PatientText1>대기자 수: </PatientText1>
           <PatientText2> {patients}</PatientText2>
         </ContainerRow>
-        <MuiButton />
+        <div>
+          <MuiButton onClick={handleOpen} />
+          <MuiModal open={open} handleClose={handleClose} name={name} />
+        </div>
       </RightArea>
     </Container>
   );
