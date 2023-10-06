@@ -5,8 +5,8 @@ import Colors from '../style/Colors';
 
 const StyledButton = styled(Button)`
   && {
-    background-color: ${Colors.GREY00};
-    color: ${Colors.GREY60};
+    background-color: ${props => (props.disabled ? Colors.GREY40 : Colors.POINT_DEEP)};
+    color: ${Colors.WHITE100};
     font-size: 13px;
     font-weight: bold;
     width: 70px;
@@ -17,8 +17,12 @@ const StyledButton = styled(Button)`
   }
 `;
 
-const MuiButton = ({ onClick, text }) => {
-  return <StyledButton onClick={onClick}> {text} </StyledButton>;
+const MuiButton = ({ onClick, text, disabled }) => {
+  return (
+    <StyledButton onClick={onClick} disabled={disabled}>
+      {text}
+    </StyledButton>
+  );
 };
 
 export default MuiButton;

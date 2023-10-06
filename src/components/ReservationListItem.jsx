@@ -4,6 +4,7 @@ import Colors from '../style/Colors';
 import MuiButton from './MuiButton';
 import { useRecoilState } from 'recoil';
 import reservationData from '../store/reservationData';
+import destructDate from '../utils/getRealTime';
 
 const Container = styled.div`
   width: 100%; //or fit-content
@@ -99,7 +100,7 @@ const PatientText2 = styled.div`
   }
 `;
 
-const ReservationList = ({ id, name, time, patients, symptoms, ex }) => {
+const ReservationListItem = ({ id, name, time, patients, symptoms, ex }) => {
   const [data, setData] = useRecoilState(reservationData);
 
   const handleCancel = () => {
@@ -107,13 +108,14 @@ const ReservationList = ({ id, name, time, patients, symptoms, ex }) => {
     setData(updatedData);
   };
 
+  const [hour, minute, _] = destructDate(time);
+
   return (
     <Container>
       <LeftArea>
         <NameText>{name}</NameText>
         <ContainerRowL>
-          <TimeText>{time}</TimeText>
-          <TimeText>에 접수하셨어요!</TimeText>
+          <TimeText>{`${hour}시 ${minute}분에 접수하셨어요!`}</TimeText>
         </ContainerRowL>
         <ContainerRowL>
           <SpaceText>
@@ -138,4 +140,4 @@ const ReservationList = ({ id, name, time, patients, symptoms, ex }) => {
   );
 };
 
-export default ReservationList;
+export default ReservationListItem;

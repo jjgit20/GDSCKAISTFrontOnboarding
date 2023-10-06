@@ -3,10 +3,10 @@ import styled from 'styled-components';
 import Chip from '../components/Chip';
 import Colors from '../style/Colors';
 import ListItem from '../components/ListItem';
-import RecoilAtom from '../store/hospitalData';
+import hospitalData from '../store/hospitalData';
 import { useRecoilValue } from 'recoil';
 
-const Container1 = styled.div`
+const Container = styled.div`
   width: 100%;
   height: 85vh;
   display: flex;
@@ -23,7 +23,7 @@ const Container1 = styled.div`
   }
 `;
 
-const Container2 = styled.div`
+const CategorySelectBar = styled.div`
   display: flex; /* 가로로 나열하려면 flex 사용 */
   align-items: center; /* 세로 중앙 정렬 */
   justify-content: flex-start; /* 버튼을 가로로 분포 */
@@ -31,16 +31,15 @@ const Container2 = styled.div`
 
 const HospitalList = () => {
   const [selectedCondition, setSelectedCondition] = useState('전체');
+  const hospitalList = useRecoilValue(hospitalData);
 
   const handleChipClick = condition => {
     setSelectedCondition(condition);
   };
 
-  const hospitalData = useRecoilValue(RecoilAtom);
-
   return (
-    <Container1>
-      <Container2>
+    <Container>
+      <CategorySelectBar>
         <Chip selected={selectedCondition === '전체'} onClick={() => handleChipClick('전체')} name="전체" />
         <Chip selected={selectedCondition === '내과'} onClick={() => handleChipClick('내과')} name="내과" />
         <Chip
@@ -48,8 +47,8 @@ const HospitalList = () => {
           onClick={() => handleChipClick('이비인후과')}
           name="이비인후과"
         />
-      </Container2>
-      {hospitalData.map(hospital => (
+      </CategorySelectBar>
+      {hospitalList.map(hospital => (
         <ListItem
           key={hospital.id}
           type={hospital.type}
@@ -57,9 +56,10 @@ const HospitalList = () => {
           time={hospital.time}
           region={hospital.region}
           patients={hospital.patients}
+          inactive={hospital.id === 2}
         />
       ))}
-    </Container1>
+    </Container>
   );
 };
 

@@ -47,7 +47,7 @@ const MuiButtonContainer = styled.div`
   justify-content: flex-end;
 `;
 
-const MuiModal = ({ open, handleClose, name, patients }) => {
+const RegisterModal = ({ open, handleClose, name, patients }) => {
   const [selectedPain, setSelectedPain] = React.useState('');
   const [ex, setEx] = React.useState('');
   const [resvData, setResvData] = useRecoilState(reservationData);
@@ -60,7 +60,7 @@ const MuiModal = ({ open, handleClose, name, patients }) => {
       id: newId,
       type: null, // 예시입니다. 필요한 값으로 변경해주세요.
       name,
-      time: null,
+      time: new Date(),
       region: null,
       patients,
       symptoms: selectedPain,
@@ -88,7 +88,7 @@ const MuiModal = ({ open, handleClose, name, patients }) => {
           <MuiDropdown selectedPain={selectedPain} setSelectedPain={setSelectedPain} />
           <MuiTextField ex={ex} setEx={setEx} />
           <MuiButtonContainer>
-            <MuiButton onClick={handleSubmit} text="접수하기" />
+            <MuiButton onClick={handleSubmit} text="접수하기" disabled={selectedPain === ''} />
           </MuiButtonContainer>
         </Container>
       </Box>
@@ -96,4 +96,4 @@ const MuiModal = ({ open, handleClose, name, patients }) => {
   );
 };
 
-export default MuiModal;
+export default RegisterModal;

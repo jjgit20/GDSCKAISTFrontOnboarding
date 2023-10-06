@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import Colors from '../style/Colors';
-import ReservationList from '../components/ReservationList';
+import ReservationList from '../components/ReservationListItem';
 import ReservationData from '../store/reservationData';
 import { useRecoilValue } from 'recoil';
 
-const Container1 = styled.div`
+const Container = styled.div`
   width: 100%;
   height: 85vh;
   display: flex;
@@ -23,11 +23,11 @@ const Container1 = styled.div`
 `;
 
 const MyReservation = () => {
-  const ResvData = useRecoilValue(ReservationData);
+  const resvData = useRecoilValue(ReservationData);
 
   return (
-    <Container1>
-      {ResvData.map(reservation => (
+    <Container>
+      {resvData.map(reservation => (
         <ReservationList
           key={reservation.id}
           id={reservation.id}
@@ -38,7 +38,7 @@ const MyReservation = () => {
           ex={reservation.ex}
         />
       ))}
-    </Container1>
+    </Container>
   );
 };
 

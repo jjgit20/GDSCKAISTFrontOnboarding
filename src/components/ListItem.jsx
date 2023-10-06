@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import Colors from '../style/Colors';
 import MuiButton from './MuiButton';
-import MuiModal from './MuiModal';
+import RegisterModal from './RegisterModal';
 
 const Container = styled.div`
   width: 100%; //or fit-content
@@ -78,7 +78,7 @@ const NameText = styled.div`
 `;
 
 const TimeText = styled.div`
-  color: ${Colors.BLACK80};
+  color: ${props => (props.inactive ? Colors.POINT_DEEP : Colors.BLACK80)};
   font-size: 11px;
   .title {
     font-family: 'Noto Sans';
@@ -115,7 +115,7 @@ const SpaceText = styled.div`
   gap: 4px;
 `;
 
-const ListItem = ({ type, name, time, region, patients }) => {
+const ListItem = ({ type, name, time, region, patients, inactive }) => {
   const [open, setOpen] = useState(false);
 
   const handleOpen = () => {
@@ -133,7 +133,8 @@ const ListItem = ({ type, name, time, region, patients }) => {
         <NameText>{name}</NameText>
         <ContainerRowL>
           <SpaceText>
-            <TimeText>{time}</TimeText>
+            {inactive && <TimeText inactive>오늘 휴무</TimeText>}
+            {!inactive && <TimeText>{time}</TimeText>}
             <RegionText>|</RegionText>
             <RegionText>{region}</RegionText>
           </SpaceText>
@@ -148,8 +149,8 @@ const ListItem = ({ type, name, time, region, patients }) => {
           <PatientText2> 명 </PatientText2>
         </ContainerRowR>
         <div>
-          <MuiButton onClick={handleOpen} text="접수하기" />
-          <MuiModal open={open} handleClose={handleClose} name={name} patients={patients} />
+          <MuiButton onClick={handleOpen} text="접수하기" disabled={inactive} />
+          <RegisterModal open={open} handleClose={handleClose} name={name} patients={patients} />
         </div>
       </RightArea>
     </Container>
