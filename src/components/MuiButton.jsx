@@ -17,8 +17,8 @@ const StyledButton = styled(Button)`
   }
 `;
 
-const MuiButton = ({ onClick }) => {
-  return <StyledButton onClick={onClick}>접수하기</StyledButton>;
+const MuiButton = ({ onClick, text }) => {
+  return <StyledButton onClick={onClick}> {text} </StyledButton>;
 };
 
 export default MuiButton;

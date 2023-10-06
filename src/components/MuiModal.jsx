@@ -7,6 +7,9 @@ import Colors from '../style/Colors';
 import MuiDropdown from './MuiDropdown';
 import MuiTextField from './MuiTextField';
 import MuiButton from './MuiButton';
+import { useRecoilState } from 'recoil';
+import reservationData from '../store/reservationData';
+// import hospitalDataData from '../store/hospitalData';
 
 const style = {
   position: 'absolute',
@@ -36,7 +39,7 @@ const ContainerRow = styled.div`
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 12px;
 `;
 
 const MuiButtonContainer = styled.div`
@@ -44,7 +47,30 @@ const MuiButtonContainer = styled.div`
   justify-content: flex-end;
 `;
 
-const MuiModal = ({ open, handleClose, name }) => {
+const MuiModal = ({ open, handleClose, name, patients }) => {
+  const [selectedPain, setSelectedPain] = React.useState('');
+  const [ex, setEx] = React.useState('');
+  const [resvData, setResvData] = useRecoilState(reservationData);
+
+  const handleSubmit = () => {
+    // ID는 기존 데이터의 마지막 ID + 1로 설정합니다.
+    const newId = resvData.length > 0 ? resvData[resvData.length - 1].id + 1 : 1;
+
+    const newData = {
+      id: newId,
+      type: null, // 예시입니다. 필요한 값으로 변경해주세요.
+      name,
+      time: null,
+      region: null,
+      patients,
+      symptoms: selectedPain,
+      ex,
+    };
+
+    setResvData(prev => [...prev, newData]); // 새 예약 데이터를 추가합니다.
+    handleClose(); // 모달을 닫습니다.
+  };
+
   return (
     <Modal
       open={open}
@@ -59,10 +85,10 @@ const MuiModal = ({ open, handleClose, name }) => {
             <Title>-</Title>
             <Title>접수하기</Title>
           </ContainerRow>
-          <MuiDropdown />
-          <MuiTextField />
+          <MuiDropdown selectedPain={selectedPain} setSelectedPain={setSelectedPain} />
+          <MuiTextField ex={ex} setEx={setEx} />
           <MuiButtonContainer>
-            <MuiButton />
+            <MuiButton onClick={handleSubmit} text="접수하기" />
           </MuiButtonContainer>
         </Container>
       </Box>

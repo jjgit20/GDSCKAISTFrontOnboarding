@@ -7,8 +7,8 @@ import MenuItem from '@mui/material/MenuItem';
 
 const symptoms = ['콧물', '두통', '복통'];
 
-const MuiDropdown = () => {
-  const [selectedPain, setSelectedPain] = useState('');
+const MuiDropdown = ({ selectedPain, setSelectedPain }) => {
+  // const [selectedPain, setSelectedPain] = useState('');
 
   const handlePainChange = event => {
     setSelectedPain(event.target.value);

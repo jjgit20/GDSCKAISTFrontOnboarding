@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import Colors from '../style/Colors';
 import MuiButton from './MuiButton';
-import MuiModal from './MuiModal';
+import { useRecoilState } from 'recoil';
+import reservationData from '../store/reservationData';
 
 const Container = styled.div`
   width: 100%; //or fit-content
@@ -25,8 +26,8 @@ const Container = styled.div`
 const LeftArea = styled.div`
   display: flex;
   flex-direction: column;
+  justify-content: flex-start;
   gap: 4px;
-  //justify-content: space-between; //이거 왜 작동 안함?
 
   .title {
     font-family: 'Noto Sans KR Bold';
@@ -55,16 +56,12 @@ const ContainerRowL = styled.div`
 const ContainerRowR = styled.div`
   display: flex; /* 가로로 나열하려면 flex 사용 */
   justify-content: flex-end;
-
   //justify-content: flex-start; /* 버튼을 가로로 분포 */
 `;
 
-const TypeText = styled.div`
-  color: ${Colors.BLACK40};
-  font-size: 11px;
-  .title {
-    font-family: 'Noto Sans';
-  }
+const SpaceText = styled.div`
+  display: flex;
+  gap: 4px;
 `;
 
 const NameText = styled.div`
@@ -79,14 +76,6 @@ const NameText = styled.div`
 
 const TimeText = styled.div`
   color: ${Colors.BLACK80};
-  font-size: 11px;
-  .title {
-    font-family: 'Noto Sans';
-  }
-`;
-
-const RegionText = styled.div`
-  color: ${Colors.BLACK40};
   font-size: 11px;
   .title {
     font-family: 'Noto Sans';
@@ -110,50 +99,43 @@ const PatientText2 = styled.div`
   }
 `;
 
-const SpaceText = styled.div`
-  display: flex;
-  gap: 4px;
-`;
+const ReservationList = ({ id, name, time, patients, symptoms, ex }) => {
+  const [data, setData] = useRecoilState(reservationData);
 
-const ListItem = ({ type, name, time, region, patients }) => {
-  const [open, setOpen] = useState(false);
-
-  const handleOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
+  const handleCancel = () => {
+    const updatedData = data.filter(item => item.id !== id);
+    setData(updatedData);
   };
 
   return (
     <Container>
       <LeftArea>
-        <TypeText>{type}</TypeText>
         <NameText>{name}</NameText>
         <ContainerRowL>
+          <TimeText>{time}</TimeText>
+          <TimeText>에 접수하셨어요!</TimeText>
+        </ContainerRowL>
+        <ContainerRowL>
           <SpaceText>
-            <TimeText>{time}</TimeText>
-            <RegionText>|</RegionText>
-            <RegionText>{region}</RegionText>
+            <TimeText>{symptoms}</TimeText>
+            <TimeText>|</TimeText>
+            <TimeText>{ex}</TimeText>
           </SpaceText>
         </ContainerRowL>
       </LeftArea>
       <RightArea>
         <ContainerRowR>
           <SpaceText>
-            <PatientText1> 대기자 수: </PatientText1>
+            <PatientText1> 내 앞에 </PatientText1>
             <PatientText2> {patients} </PatientText2>
           </SpaceText>
           <PatientText2> 명 </PatientText2>
         </ContainerRowR>
-        <div>
-          <MuiButton onClick={handleOpen} text="접수하기" />
-          <MuiModal open={open} handleClose={handleClose} name={name} patients={patients} />
-        </div>
+
+        <MuiButton onClick={handleCancel} text="취소하기" />
       </RightArea>
     </Container>
   );
 };
 
-export default ListItem;
+export default ReservationList;
