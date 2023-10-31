@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Box from '@mui/material/Box';
 import InputLabel from '@mui/material/InputLabel';
 import FormControl from '@mui/material/FormControl';
@@ -7,18 +7,18 @@ import MenuItem from '@mui/material/MenuItem';
 
 const symptoms = ['콧물', '두통', '복통'];
 
-const MuiDropdown = ({ selectedPain, setSelectedPain }) => {
-  // const [selectedPain, setSelectedPain] = useState('');
+const MuiDropdown = ({ selectedSymptom, setSelectedSymptom }) => {
+  // const [selectedSymptom, setselectedSymptom] = useState('');
 
   const handlePainChange = event => {
-    setSelectedPain(event.target.value);
+    setSelectedSymptom(event.target.value);
   };
 
   return (
     <Box>
       <FormControl variant="standard">
         <InputLabel shrink>증상</InputLabel>
-        <Select value={selectedPain} onChange={handlePainChange} displayEmpty style={{ width: '220px' }}>
+        <Select value={selectedSymptom} onChange={handlePainChange} displayEmpty style={{ width: '220px' }}>
           <MenuItem value="">증상을 선택해주세요</MenuItem>
           {symptoms.map(pain => (
             <MenuItem value={pain}>{pain}</MenuItem>

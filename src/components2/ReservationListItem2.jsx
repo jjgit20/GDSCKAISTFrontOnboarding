@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import Colors from '../style/Colors';
-import MuiButton from './MuiButton';
-import RegisterModal2 from '../components2/RegisterModal2';
+import MuiButton from '../components/MuiButton';
+import { deleteForEntity } from '../network/HttpRequests';
 
 const Container = styled.div`
   width: 100%; //or fit-content
@@ -25,8 +25,8 @@ const Container = styled.div`
 const LeftArea = styled.div`
   display: flex;
   flex-direction: column;
+  justify-content: flex-start;
   gap: 4px;
-  //justify-content: space-between; //이거 왜 작동 안함?
 
   .title {
     font-family: 'Noto Sans KR Bold';
@@ -55,16 +55,12 @@ const ContainerRowL = styled.div`
 const ContainerRowR = styled.div`
   display: flex; /* 가로로 나열하려면 flex 사용 */
   justify-content: flex-end;
-
   //justify-content: flex-start; /* 버튼을 가로로 분포 */
 `;
 
-const TypeText = styled.div`
-  color: ${Colors.BLACK40};
-  font-size: 11px;
-  .title {
-    font-family: 'Noto Sans';
-  }
+const SpaceText = styled.div`
+  display: flex;
+  gap: 4px;
 `;
 
 const NameText = styled.div`
@@ -78,15 +74,7 @@ const NameText = styled.div`
 `;
 
 const TimeText = styled.div`
-  color: ${props => (props.inactive ? Colors.POINT_DEEP : Colors.BLACK80)};
-  font-size: 11px;
-  .title {
-    font-family: 'Noto Sans';
-  }
-`;
-
-const RegionText = styled.div`
-  color: ${Colors.BLACK40};
+  color: ${Colors.BLACK80};
   font-size: 11px;
   .title {
     font-family: 'Noto Sans';
@@ -110,51 +98,40 @@ const PatientText2 = styled.div`
   }
 `;
 
-const SpaceText = styled.div`
-  display: flex;
-  gap: 4px;
-`;
+const ReservationListItem2 = ({ registerId, hospitalName, registerTime, patients, symptom, note, onDelete }) => {
+  const [isDeleted, setIsDeleted] = useState(false);
 
-const ListItem = ({ type, hospitalName, time, region, patients, inactive }) => {
-  const [open, setOpen] = useState(false);
-
-  const handleOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-  };
+  // 만약 데이터가 성공적으로 삭제되었다면, 컴포넌트를 더 이상 렌더링하지 않습니다.
+  if (isDeleted) return null;
 
   return (
     <Container>
       <LeftArea>
-        <TypeText>{type}</TypeText>
         <NameText>{hospitalName}</NameText>
         <ContainerRowL>
+          <TimeText>{`${registerTime.getHours()}시 ${registerTime.getMinutes()}분에 접수하셨어요!`}</TimeText>
+        </ContainerRowL>
+        <ContainerRowL>
           <SpaceText>
-            {inactive && <TimeText inactive>오늘 휴무</TimeText>}
-            {!inactive && <TimeText>{time}</TimeText>}
-            <RegionText>|</RegionText>
-            <RegionText>{region}</RegionText>
+            <TimeText>{symptom}</TimeText>
+            <TimeText>|</TimeText>
+            <TimeText>{note}</TimeText>
           </SpaceText>
         </ContainerRowL>
       </LeftArea>
       <RightArea>
         <ContainerRowR>
           <SpaceText>
-            <PatientText1> 대기자 수: </PatientText1>
+            <PatientText1> 내 앞에 </PatientText1>
             <PatientText2> {patients} </PatientText2>
           </SpaceText>
           <PatientText2> 명 </PatientText2>
         </ContainerRowR>
-        <div>
-          <MuiButton onClick={handleOpen} text="접수하기" disabled={inactive} />
-          <RegisterModal2 open={open} handleClose={handleClose} hospitalName={hospitalName} patients={patients} />
-        </div>
+
+        <MuiButton onClick={() => onDelete(registerId)} text="취소하기" />
       </RightArea>
     </Container>
   );
 };
 
-export default ListItem;
+export default ReservationListItem2;

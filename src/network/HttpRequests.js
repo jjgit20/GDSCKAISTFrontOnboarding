@@ -15,9 +15,10 @@ const requestForEntity = async (method, url, params, data, arrayNoBrackets) => {
       method,
       params,
       data,
-      baseURL: 'http://localhost:8080/',
+      baseURL: 'http://localhost:8000/',
       paramsSerializer: arrayNoBrackets ? param => qs.stringify(param, { arrayFormat: 'repeat' }) : undefined,
     });
+
     return axiosResult.data;
   } catch (e) {
     if (e.code === 200) return Promise.resolve();

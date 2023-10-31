@@ -3,7 +3,7 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 
 const app = express();
-const port = 8080;
+const port = 8000;
 
 /**
  * Data Interface
@@ -13,7 +13,7 @@ const port = 8080;
  * symptom: string;
  * note: string;
  */
-const registers = [];
+let registers = [];
 
 app.use(function (req, res, next) {
   res.header('Access-Control-Allow-Origin', '*');
@@ -59,6 +59,13 @@ app.post('/registers', (req, res) => {
     symptom,
     note,
   });
+  res.sendStatus(200);
+});
+
+app.post('/register/delete', (req, res) => {
+  const { body } = req;
+  const { registerId } = body;
+  registers = registers.filter(item => item.id !== registerId);
   res.sendStatus(200);
 });
 

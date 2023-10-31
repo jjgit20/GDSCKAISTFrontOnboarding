@@ -52,7 +52,7 @@ const HospitalList = () => {
         <ListItem
           key={hospital.id}
           type={hospital.type}
-          name={hospital.name}
+          hospitalName={hospital.hospitalName}
           time={hospital.time}
           region={hospital.region}
           patients={hospital.patients}
